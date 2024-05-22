@@ -1,4 +1,8 @@
 .DS_Store
 renv
 00_docs/*
+02_report/report.aux
+02_report/report.log
+02_report/report.out
+*.ltjruby
 
