@@ -89,12 +89,32 @@ m = 2 から m = 10 にかけて少しずつ正規分布に近似していくの
 
 \subsubsection{１年間で発生する期待コスト}
 
-サーバは１年間で平均して 2.5 回故障するので、期待コストは以下の式で導けます。
+サーバは１年間で平均して 2.5 回故障するので、期待コストは以下の式で導る。
 
 \[ 10000 + 90000 \times 2.5 = 235000 \]
 
-したがって、期待コストは 235,000 円です。
+したがって、期待コストは 235,000 円。
 
+\subsubsection{サーバー故障確率の累積分布関数}
 
+\begin{lstlisting}[]
+	simulate_exponential <- function(lambda, sample_size, seed_num) {
+		set.seed(seed_num)
+		df_cdf <- dplyr::tibble(
+			rv_uni = runif(sample_size)
+		) |>
+			dplyr::mutate(
+				prob = -(log(1 - rv_uni) / (lambda))
+			)
+		plot_cdf(df_cdf)
+	}
+
+\end{lstlisting}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{2-3_plot.png}
+	\end{center}
+
+サーバ故障確率の累積分布関数のプロットは、X軸方向が時間、Y軸方向が確率となっている。\\
+X時点においてサーバがすでに故障している確率が確認できる。したがって、5年経つと約 0.875 の確率で故障していることなどが見て取れる。
 
 \end{document}
