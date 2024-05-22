@@ -3,9 +3,9 @@ main <- function() {
   # setup
   library(tidyverse)
 
-  lambda <- #(2.1)
+  lambda <- 1 / 2.5
 
-  seed_num <- student_number
+  seed_num <- 2125178
 
   # (2.3)
   simulate_exponential(lambda, sample_size, seed_num)
