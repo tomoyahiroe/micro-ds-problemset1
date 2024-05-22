@@ -2,13 +2,21 @@ main <- function() {
     # setup
     library(tidyverse)
 
-    seed_num <- student_number
+    seed_num <- 2125178
 
     # (1.2)
-    calculate_scores(m = 1, n = 100000, seed_num)
-    calculate_scores(m = 2, n = 100000, seed_num)
-    calculate_scores(m = 5, n = 100000, seed_num)
-    calculate_scores(m = 10, n = 100000, seed_num)
+    m1 <- calculate_scores(m = 1, n = 100000, seed_num)
+    m2 <- calculate_scores(m = 2, n = 100000, seed_num)
+    m3 <- calculate_scores(m = 5, n = 100000, seed_num)
+    m4 <- calculate_scores(m = 10, n = 100000, seed_num)
+
+		compiled_plot <- gridExtra::grid.arrange(m1, m2, m3, m4, nrow = 2)
+		ggplot2::ggsave(
+										filename = "1-2_plot.png", 
+										plot = compiled_plot, 
+										path = here::here("01_code", "output"),
+										device = "png"
+		)
 
     # (1.3 Adv)
     generate_convolution(1, n = 100000, seed_num)
@@ -32,20 +40,19 @@ roll_dice <- function(m) {
 
 # (1.2)
 calculate_scores <- function(m, n, seed_num) {
-  plot_scores(df_score)
-
-  score <- replicate(n, sum(roll_dice(m)))
   set.seed(seed_num)
+  score <- replicate(n, sum(roll_dice(m)))
   df_score <- dplyr::tibble(score)
+  plot_scores(df_score)
 }
 
 plot_scores <- function(df_score) {
-  plot_output <- ggplot(df_score, aes(x = score)) +
-      geom_histogram(binwidth = 1) +
-      labs(
+  plot_output <- ggplot2::ggplot(df_score, ggplot2::aes(x = score)) +
+      ggplot2::geom_histogram(binwidth = 1) +
+      ggplot2::labs(
         x = "Score", 
         y = "Frequency") +
-      theme_bw()
+      ggplot2::theme_bw()
 
   return(plot_output)
 }
@@ -73,7 +80,7 @@ generate_convolution <- function(l, n, seed_num) {
 
 plot_convolution <- function(df_convolution) {
 
-  plot_output <- ggplot() +
+  plot_output <- ggplot2::ggplot() +
     geom_histogram(data = df_convolution, mapping = aes(x = convolution), stat = "density")+ 
     theme_bw()
 
@@ -103,7 +110,7 @@ calculate_variances <- function(n, m, seed_num){
 
 
 plot_variance <- function(df_variance) {
-    plot_output <- ggplot(df_variance, aes(x = m_values, y = variances)) +
+    plot_output <- ggplot2::ggplot(df_variance, aes(x = m_values, y = variances)) +
     geom_line() +
     labs(
       x = "Number of Dice (m)", 
