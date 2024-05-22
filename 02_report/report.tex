@@ -4,6 +4,8 @@
 \usepackage{luatexja-fontspec}
 \usepackage{luatexja-ruby} % ルビを使用する場合に必要
 \usepackage{graphicx}
+\usepackage{listings}
+%\usepackage{xcolor}
 
 % フォントの設定
 %\setmainfont{Noto Serif JP}    % 通常の明朝体
@@ -13,7 +15,20 @@
 %\setsansjfont{Noto Sans JP}    % 日本語のゴシック体
 %\setmonojfont{Noto Sans Mono JP} % 日本語の等幅フォント
 
+% 図の参照パス
 \graphicspath{{./01_code/output/}}
+
+% コードのスタイル設定
+\lstset{
+  basicstyle=\ttfamily\small, % フォントのサイズとスタイル
+  %keywordstyle=\color{blue},  % キーワードの色
+  %commentstyle=\color{gray},  % コメントの色
+  %stringstyle=\color{red},    % 文字列の色
+  numbers=left,               % 行番号を左側に表示
+  %numberstyle=\tiny\color{gray}, % 行番号のスタイル
+  breaklines=true,            % 長い行を折り返す
+	frame=single,               % コードブロックに枠をつける
+}
 
 \begin{document}
 
@@ -32,6 +47,17 @@
 どの実現値においても同じ確率 1/6 を取る長方形のような形の分布になる。
 
 \subsection{コードの実行結果の考察}
+
+\begin{lstlisting}[]
+	calculate_scores <- function(m, n, seed_num) {
+		set.seed(seed_num)
+		score <- replicate(n, sum(roll_dice(m)))
+		df_score <- dplyr::tibble(score)
+		plot_scores(df_score)
+	}
+
+\end{lstlisting}
+
 	\begin{center}
 		\includegraphics[width=0.7\textwidth]{1-2_plot.png}
 	\end{center}
@@ -44,6 +70,12 @@ m = 2 から m = 10 にかけて少しずつ正規分布に近似していくの
 \subsection{確率分布の和の分布のシミュレーションadv}
 
 \subsection{標本平均の分散の変化}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{1-4_plot.png}
+	\end{center}
+
+サイコロの数が増える、つまり、和をとる確率変数の数が増えるほど
+標本平均の分散は指数関数的に減少していく傾向になることがわかる。
 
 
 
